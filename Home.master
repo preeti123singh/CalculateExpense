@@ -1,0 +1,31 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Home.master.cs" Inherits="Home" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server"><title></title></head>
+<body style="padding:0px;margin:0px;">
+    
+    <div>
+       <table style="width:100%;height:100%;">  
+                    <tr style="background-color:#99D3DF">  
+                        <td colspan="2" style="text-align: center;height:150px;" >  
+                            <h1>Expenses</h1>  
+                        </td>  
+                    </tr>  
+                    <tr>  
+                        <td style="width: 250px; background-color:#99D3DF;height:100%;">  
+                           
+                        </td>  
+                        <td>  
+                            <asp:ContentPlaceHolder ID="heads" runat="server">  
+                                 <h1>Place content here</h1>
+                            </asp:ContentPlaceHolder>  
+                        </td>  
+                    </tr>  
+                   
+                </table>  
+    </div>
+   
+</body>
+</html>
