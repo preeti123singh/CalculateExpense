@@ -15,18 +15,24 @@ public partial class Expense : System.Web.UI.Page
     System.Configuration.Configuration rootWebConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/CalculateExpense");
     System.Configuration.ConnectionStringSettings connString;
 
+
+    //protected override void OnPreRender(EventArgs e)
+    //{
+    //    base.OnPreRender(e);
+    //    string strDisAbleBackButton;
+    //    strDisAbleBackButton = "<script language=javascript>\n";
+    //    strDisAbleBackButton += "window.history.forward(1);\n";
+    //    strDisAbleBackButton += "\n</script>";
+    //    ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "clientScript", strDisAbleBackButton);
+    //}
+
     protected void Page_Load(object sender, EventArgs e)
     {
-       
-        GetConnectionString();
+        connection = (SqlConnection)Session["connection"];
         if (!Page.IsPostBack)
         {
-
-
             PopulateDropdown();
-
         }
-
     }
 
     public void PopulateDropdown()
@@ -60,38 +66,38 @@ public partial class Expense : System.Web.UI.Page
     }
 
     
-    public void GetConnectionString()
-    {
-        try
-        {
+    //public void GetConnectionString()
+    //{
+    //    try
+    //    {
 
-            if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
-            {
-                connString = rootWebConfig.ConnectionStrings.ConnectionStrings["Expenses"];
-                if (connection == null)
-                {
-                    connection = new SqlConnection(connString.ToString());
+    //        if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
+    //        {
+    //            connString = rootWebConfig.ConnectionStrings.ConnectionStrings["Expenses"];
+    //            if (connection == null)
+    //            {
+    //                connection = new SqlConnection(connString.ToString());
                     
-                    Session["Connection"] = connection;
-                    connection.Open();
+    //                Session["Connection"] = connection;
+    //                connection.Open();
 
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Page.ClientScript.RegisterStartupScript(Page.GetType(),
-                "MessageBox", "alert('" + e.Message + "');", true);
-        }
+    //            }
+    //        }
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Page.ClientScript.RegisterStartupScript(Page.GetType(),
+    //            "MessageBox", "alert('" + e.Message + "');", true);
+    //    }
 
-        finally
-        {
-            if (connection != null && connection.State == ConnectionState.Open)
-            {
-                connection.Close();
-            }
-        }
-    }
+    //    finally
+    //    {
+    //        if (connection != null && connection.State == ConnectionState.Open)
+    //        {
+    //            connection.Close();
+    //        }
+    //    }
+    //}
     string Filename;
     public string GetPhotos() {
         string Images = " ";

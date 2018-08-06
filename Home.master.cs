@@ -11,4 +11,11 @@ public partial class Home : System.Web.UI.MasterPage
     {
 
     }
+
+    protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+    {
+      
+        Session.Abandon();
+        Response.Redirect("Login.aspx");
+    }
 }

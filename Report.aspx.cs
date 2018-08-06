@@ -30,10 +30,12 @@ public partial class Report : System.Web.UI.Page
         if (data_grid.Rows.Count == 0)
         {
             btn_Excel.Visible = false;
+            btn_Pdf.Visible = false;
         }
         else
         {
             btn_Excel.Visible = true;
+            btn_Pdf.Visible = true;
         }
     }
     public void loaddata()
@@ -44,10 +46,12 @@ public partial class Report : System.Web.UI.Page
         if (data_grid.Rows.Count == 0)
         {
             btn_Excel.Visible = false;
+            btn_Pdf.Visible = false;
         }
         else
         {
             btn_Excel.Visible = true;
+            btn_Pdf.Visible = true;
         }
         con.Close();
     }
@@ -165,10 +169,12 @@ public partial class Report : System.Web.UI.Page
         if (dt.Rows.Count == 0)
         {
             btn_Excel.Visible = false;
+            btn_Pdf.Visible = false;
         }
         else
         {
             btn_Excel.Visible = true;
+            btn_Pdf.Visible = true;
         }
         Session["data_grid"] = dt;
         loaddata();

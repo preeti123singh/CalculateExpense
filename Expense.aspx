@@ -39,15 +39,33 @@
         font-family:Bahnschrift SemiBold;
         font-size:18px;
     }
+    .tdstyle{
+       
+        border-radius:10px;
+    -moz-border-radius:10px;
+    -webkit-border-radius:10px;
+}
     </style>
        
+     <script type="text/javascript">
 
+        //window.onload = function () {
+        //    SetHeight();
+           
+        //};
+        //function SetHeight() {
+            
+        //var x =  screen.height + "px";
+        //document.getElementById("form1").style.height = x;
+        //}
+       
+    </script>
 
 </head>
-<body >
-    <form id="form1" runat="server" style="background-color:#E9E9E9">
+<body>
+    <form id="form1" runat="server" style="background-color:#E9E9E9;" class="tdstyle">
         
-        <div style="width:1000px;margin:0 auto;padding-top:20px;">
+        <div style="width:1000px;margin:0 auto;padding-top:20px;" class="tdstyle">
 
             <table style="width:100%;margin:0 auto;">
                 <tr>
@@ -62,7 +80,7 @@
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please enter Date" ControlToValidate="Textbox1" ValidationGroup="Require" ForeColor="#FF3300"></asp:RequiredFieldValidator> 
                     </td>
                    <td>
-                       <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server"  TargetControlID="TextBox1" Format="dd/MM/yyyy"/></td>
+                       <ajaxtoolkit:calendarextender ID="CalendarExtender1" runat="server"  TargetControlID="TextBox1" Format="dd/MM/yyyy"/></td>
                                       
                 </tr>
                 <tr>
@@ -141,9 +159,9 @@
 
         <div style="margin:0 auto;width:300px;">
              <table >
-                <tr>
+                <%--<tr>--%>
 
-                    <td></td>
+<%--                    <td></td>
 
                     <td>&nbsp;</td>
                 </tr>
@@ -154,7 +172,7 @@
                 <tr>
                     <td class="auto-style4">&nbsp;</td>
                     <td>&nbsp;</td>
-                </tr>
+                </tr>--%>
                 <tr>
                     <td class="auto-style4">
                         <asp:Button ID="btn_submit" runat="server" OnClick="btn_submit_Click" Text="Submit" CssClass="txtbox" Font-Names="Bahnschrift SemiBold" ValidationGroup="Require"/>

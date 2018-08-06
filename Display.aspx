@@ -33,7 +33,7 @@
 <body style="padding:0px;">
     <form id="form1" runat="server" style="background-color:#E9E9E9 ;">
          
-        <div style="margin: 0 auto;" >
+        <div style="margin-top:100px;" >
 
            
             <asp:GridView ID="GridView1" runat="server" Width="100%"   CellPadding="4" DataKeyNames="ID" ForeColor="#333333" GridLines="None" AutoGenerateColumns="False" OnRowDeleting="GridView1_RowDeleting" ShowHeaderWhenEmpty="True" OnRowEditing="GridView1_RowEditing" OnRowUpdated="GridView1_RowUpdated" OnRowUpdating="GridView1_RowUpdating" OnRowCancelingEdit="GridView1_RowCancelingEdit"  >

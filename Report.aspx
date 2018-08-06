@@ -18,14 +18,14 @@
     
     <script type="text/javascript">
 
-        window.onload = function () {
-            SetHeight();
-        };
-        function SetHeight() {
+        //window.onload = function () {
+        //    SetHeight();
+        //};
+        //function SetHeight() {
             
-        var x =  screen.height + "px";
-        document.getElementById("form1").style.height = x;
-        }
+        //var x =  screen.height + "px";
+        //document.getElementById("form1").style.height = x;
+        //}
         //Maintain Scroll bar position
         function setScroll(val) {
           

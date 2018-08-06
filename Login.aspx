@@ -9,7 +9,7 @@
    body {font-family: Arial, Helvetica, sans-serif;}
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+.txtbox{
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -19,7 +19,7 @@ input[type=text], input[type=password] {
 }
 
 /* Set a style for all buttons */
-button {
+.button {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -57,6 +57,7 @@ span.psw {
 
 
 
+
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
@@ -75,17 +76,20 @@ span.psw {
 
     <div class="container">
       <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required>
-
+    <%--  <input type="text" placeholder="Enter Username" name="uname" required runat="server">--%>
+        <asp:TextBox ID="TextBox1" runat="server" CssClass="txtbox"></asp:TextBox>
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
+     <%-- <input type="password" placeholder="Enter Password" name="psw" required runat="server">--%>
         
-      <button type="submit">Login</button>
+     <asp:TextBox ID="TextBox2" runat="server" CssClass="txtbox"></asp:TextBox>
+        <asp:Button ID="Button1" runat="server" Text="Login"  CssClass="button" OnClick="Button1_Click"/>
       <label>
-        <span>Forgot <a href="#">password?</a></span>
+          <span><asp:HyperLink ID="HyperLink1" runat="server" CssClass="hyl" Font-Bold="True"  Font-Size="Smaller" >Forgot Password</asp:HyperLink></span>
+        
       </label>
     </div>
     </form>
        
 </body>
 </html>
+
