@@ -31,20 +31,43 @@
             border-top-right-radius: 4px;
             border-bottom-left-radius: 4px;
             border-bottom-right-radius: 4px;
+            
+        }
+        .btnbox{
+             border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            float:right;
+              margin-top:20px;
         }
     .auto-style1 {
         height: 29px;
     }
     #form1{
         font-family:Bahnschrift SemiBold;
-        font-size:18px;
+        font-size:20px;
+        /*color:#0e5566;*/ 
     }
-    .tdstyle{
-       
-        border-radius:10px;
-    -moz-border-radius:10px;
-    -webkit-border-radius:10px;
-}
+    
+    input[type='text']{
+        margin:7px;
+      
+    }
+   .txtboxgap{
+       margin-top:20px;
+       border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+   }
+   .fileupl{
+       margin-top:20px;
+       border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+   }
     </style>
        
      <script type="text/javascript">
@@ -62,25 +85,26 @@
     </script>
 
 </head>
-<body>
-    <form id="form1" runat="server" style="background-color:#E9E9E9;" class="tdstyle">
+<body style="padding:0px;">
+    <form id="form1" runat="server" class="tdstyle">
         
-        <div style="width:1000px;margin:0 auto;padding-top:20px;" class="tdstyle">
+        <div class="tdstyle">
 
-            <table style="width:100%;margin:0 auto;">
+            <table style="margin:0 auto;width:50%" >
                 <tr>
                     <td >
                        
-                       Date <%--<asp:Label ID="lbl_date" runat="server" Text="Date" Font-Names="Bahnschrift SemiBold" ></asp:Label>--%>
+                      <asp:Label ID="lbl_date" runat="server" Text="Date" Font-Names="Bahnschrift SemiBold" ></asp:Label>
                        
                     </td>
                     <td>
-                        <asp:TextBox ID="TextBox1" runat="server" AutoCompleteType="Disabled"    MaxLength="50" CssClass="txtbox"></asp:TextBox>
+                        <asp:TextBox ID="TextBox1" runat="server" AutoCompleteType="Disabled" MaxLength="50" CssClass="txtbox"></asp:TextBox>
                         <asp:Image ID="Img" runat="server" ImageUrl="~/Pics/Calendar.png"  Width="22px" CssClass="txtbox" />
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please enter Date" ControlToValidate="Textbox1" ValidationGroup="Require" ForeColor="#FF3300"></asp:RequiredFieldValidator> 
+                        
+                       <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please enter Date" ControlToValidate="Textbox1" ValidationGroup="Require" ForeColor="#FF3300"></asp:RequiredFieldValidator> 
                     </td>
-                   <td>
-                       <ajaxtoolkit:calendarextender ID="CalendarExtender1" runat="server"  TargetControlID="TextBox1" Format="dd/MM/yyyy"/></td>
+                   <td><ajaxtoolkit:calendarextender ID="CalendarExtender1" runat="server"  TargetControlID="TextBox1" Format="dd/MM/yyyy"/></td>
+                  
                                       
                 </tr>
                 <tr>
@@ -115,13 +139,13 @@
                        
                     </td>
                 </tr>
-                <tr class="RowStyle">
+                <tr>
                     <td >
                         Description
                       <%--  <asp:Label ID="lbl_des" runat="server" Text="Description" Font-Names="Bahnschrift SemiBold"></asp:Label>--%>
                     </td>
                     <td >
-                        <asp:TextBox ID="txt_Description" runat="server" Height="100px" TextMode="MultiLine" AutoCompleteType="Disabled" CssClass="txtbox" ></asp:TextBox>
+                        <asp:TextBox ID="txt_Description" runat="server" Height="100px" TextMode="MultiLine" AutoCompleteType="Disabled" CssClass="txtboxgap" ></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="Please enter Description" ControlToValidate="txt_Description" ValidationGroup="Require" ForeColor="#FF3300"></asp:RequiredFieldValidator> 
                     </td>
                 </tr>
@@ -135,16 +159,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Receipt(Jpg/Png)
+                    <td style="vertical-align:sub;">Receipt(Jpg/Png)
                         <%--<asp:Label ID="lbl_Image" runat="server" Text="Receipt(Jpg/Png)" Font-Names="Bahnschrift SemiBold"  ></asp:Label>--%>
                     </td>
                     <td>  
                         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <asp:FileUpload ID="FileUpload1" runat="server" CssClass="txtbox" Font-Names="Bahnschrift SemiBold"/>
-                                <asp:Button ID="btn_upload" runat="server" Text="Show Image" OnClick="btn_upload_Click" CssClass="txtbox" Font-Names="Bahnschrift SemiBold" />
+                                <asp:FileUpload ID="FileUpload1" runat="server" CssClass="fileupl" Font-Names="Bahnschrift SemiBold" accept=".png,.jpg,.jpeg,.gif"/>
+                                <asp:Button ID="btn_upload" runat="server" Text="Show Image" OnClick="btn_upload_Click" CssClass="btnbox" Font-Names="Bahnschrift SemiBold" />
+                                <asp:Label ID="lbl_image" runat="server" Text="" ></asp:Label> 
                                 <asp:Image ID="Image1" runat="server" Height="150px" Width="200px" ImageAlign="Middle" />
+                                
+                                 <%-- <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ErrorMessage="Only .jpg,.jpeg,gif,.png images are allowed." ValidationExpression="/^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpeg|.JPEG|.gif|.GIF| .png|.PNG)$/" ControlToValidate="FileUpload1"></asp:RegularExpressionValidator>--%>
                             </ContentTemplate>
                             <Triggers>
                                 <asp:PostBackTrigger ControlID="btn_upload" />
@@ -159,9 +186,9 @@
 
         <div style="margin:0 auto;width:300px;">
              <table >
-                <%--<tr>--%>
+               <%-- <tr>
 
-<%--                    <td></td>
+                <td></td>
 
                     <td>&nbsp;</td>
                 </tr>
@@ -174,7 +201,7 @@
                     <td>&nbsp;</td>
                 </tr>--%>
                 <tr>
-                    <td class="auto-style4">
+                    <td>
                         <asp:Button ID="btn_submit" runat="server" OnClick="btn_submit_Click" Text="Submit" CssClass="txtbox" Font-Names="Bahnschrift SemiBold" ValidationGroup="Require"/>
                     </td>
                     <td>

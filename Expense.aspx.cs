@@ -101,22 +101,35 @@ public partial class Expense : System.Web.UI.Page
     string Filename;
     public string GetPhotos() {
         string Images = " ";
-       
-        if (FileUpload1.HasFile) {
-             Filename = FileUpload1.FileName.Replace(" ","");
-            FileUpload1.PostedFile.SaveAs(Server.MapPath(("~/Upload/" + Filename)));
-            Images = "/Upload/" + Filename.ToString();
-        } else {
-            if (ViewState["File"] != null)
+        string ext = System.IO.Path.GetExtension(this.FileUpload1.PostedFile.FileName).ToLower();
+        if (ext == ".jpg" || ext == ".png" || ext == ".gif" || ext == ".jpeg")
+        {
+            if (FileUpload1.HasFile)
             {
-                Images = ViewState["File"].ToString();
-                Filename = ViewState["Filename"].ToString();
+                Filename = FileUpload1.FileName.Replace(" ", "");
+                FileUpload1.PostedFile.SaveAs(Server.MapPath(("~/Upload/" + Filename)));
+                Images = "/Upload/" + Filename.ToString();
             }
             else
             {
-                Images = "/Upload/download.jpg";
-                Filename = "download.jpg";
+                if (ViewState["File"] != null)
+                {
+                    Images = ViewState["File"].ToString();
+                    Filename = ViewState["Filename"].ToString();
+                }
+                else
+                {
+                    Images = "/Upload/download.jpg";
+                    Filename = "download.jpg";
+                }
             }
+        }
+        else
+        {
+            Images = "/Upload/download.jpg";
+            Filename = "download.jpg";
+            lbl_image.Text = "Please upload image with .jpg,.jpeg,.png,.gif extensions.";
+            lbl_image.ForeColor = System.Drawing.Color.Red;
         }
         return (Images);
     }

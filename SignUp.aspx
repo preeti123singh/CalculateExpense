@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="SignUp.aspx.cs" Inherits="SignUp" %>
 
 <!DOCTYPE html>
 
@@ -6,7 +6,10 @@
 <head runat="server">
     <title></title>
     <style type="text/css">
-   body {font-family: Arial, Helvetica, sans-serif;}
+        .auto-style1 {
+            width: 100%;
+        }
+           body {font-family: Arial, Helvetica, sans-serif;}
 
 /* Full-width input fields */
 .txtbox{
@@ -50,10 +53,10 @@ img.avatar {
     padding: 16px;
 }
 
-/*span.psw {
+span.psw {
     float: right;
     padding-top: 16px;
-}*/
+}
 
 
 
@@ -68,29 +71,24 @@ img.avatar {
     </style>
 </head>
 <body>
-    
     <form id="form1" runat="server" class="modal-content animate" >
-    <div class="imgcontainer">
-        <img src="Pics/10bits.bmp" alt="Avatar" class="avatar" />
-    </div>
-
-    <div class="container">
+   
+    
+           <div class="container">
       <label for="uname"><b>Username</b></label>
     <%--  <input type="text" placeholder="Enter Username" name="uname" required runat="server">--%>
-        <asp:TextBox ID="TextBox1" runat="server" CssClass="txtbox"></asp:TextBox>
+        <asp:TextBox ID="txt_username" runat="server" CssClass="txtbox"></asp:TextBox>
       <label for="psw"><b>Password</b></label>
      <%-- <input type="password" placeholder="Enter Password" name="psw" required runat="server">--%>
         
-     <asp:TextBox ID="TextBox2" runat="server" CssClass="txtbox"></asp:TextBox>
-        <asp:Button ID="Button1" runat="server" Text="Login"  CssClass="button" OnClick="Button1_Click"/>
-    
-          <span><asp:HyperLink ID="HyperLink1" runat="server" CssClass="hyl" Font-Bold="True"  Font-Size="Smaller" >Forgot Password</asp:HyperLink></span>
-          <span style="float:right;"><asp:HyperLink ID="HyperLink2" runat="server" CssClass="hyl" Font-Bold="True"  Font-Size="Smaller"  NavigateUrl="~/SignUp.aspx">Sign Up</asp:HyperLink></span>
+     <asp:TextBox ID="txt_password" runat="server" CssClass="txtbox"></asp:TextBox>
+               <label for="psw"><b>Email</b></label>
+     <%-- <input type="password" placeholder="Enter Password" name="psw" required runat="server">--%>
         
-     
-    </div>
+     <asp:TextBox ID="txt_Email" runat="server" CssClass="txtbox"></asp:TextBox>
+        <asp:Button ID="btn_submit" runat="server" Text="Submit"  CssClass="button" OnClick="btn_submit_Click" />
+      
+     </div>
     </form>
-       
 </body>
 </html>
-

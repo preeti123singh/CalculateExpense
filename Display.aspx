@@ -31,7 +31,7 @@
     </script>
 </head>
 <body style="padding:0px;">
-    <form id="form1" runat="server" style="background-color:#E9E9E9 ;">
+    <form id="form1" runat="server">
          
         <div style="margin-top:100px;" >
 

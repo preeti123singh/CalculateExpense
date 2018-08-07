@@ -24,10 +24,10 @@ public partial class Login : System.Web.UI.Page
         {
             //string uid = TextBox1.Text;
             //string pass = TextBox2.Text;
-            string uid = "Krish";
-            string pass = "kk@321";
+            string uid = "preeti";
+            string pass = "preeti";
             connection.Open();
-            string qry = "select * from Ulogin where UserId='" + uid + "' and Password='" + pass + "'";
+            string qry = "select * from Ulogins where UserId='" + uid + "' and Password='" + pass + "'";
             SqlCommand cmd = new SqlCommand(qry, connection);
             SqlDataReader sdr = cmd.ExecuteReader();
             if (sdr.Read())
