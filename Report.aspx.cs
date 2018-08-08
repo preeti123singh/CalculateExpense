@@ -20,7 +20,7 @@ public partial class Report : System.Web.UI.Page
     public SqlDataAdapter adp;
     public DataSet ds;
     private static DataTable dt = new DataTable();
-
+ 
     public object ImageDataFactory { get; private set; }
 
     protected void Page_Load(object sender, EventArgs e)
@@ -132,8 +132,14 @@ public partial class Report : System.Web.UI.Page
 
         con.Open();
 
-        SqlCommand cmd = new SqlCommand("update tbl_expenses set Money='" + textMoney.Text + "',Payment='" + textPayment.Text + "',Description='" + textDescription.Text + "',Comments='" + textComment.Text + "',Image='" + path + "',Filename='" + filename + "',Date='" + date + "' where id='" + id + "'", con);
-        //SqlCommand cmd = new SqlCommand("update tbl_expenses set Money='" + textMoney.Text + "',Payment='" + textPayment.Text + "',Description='" + textDescription.Text + "',Image='" + path + "',Date='" + date + "' where id='" + id + "'", con);
+        SqlCommand cmd = new SqlCommand("update tbl_expenses set Money='" + textMoney.Text + 
+                                        "',Payment='" + textPayment.Text + 
+                                        "',Description='" + textDescription.Text + 
+                                        "',Comments='" + textComment.Text + 
+                                        "',Image='" + path + 
+                                        "',Filename='" + filename + 
+                                        "',Date='" + date + 
+                                        "' where id='" + id + "'", con);       
         cmd.ExecuteNonQuery();
         dt.Rows[row.RowIndex]["Money"] = textMoney.Text;
         dt.Rows[row.RowIndex]["Date"] = date;
@@ -155,7 +161,6 @@ public partial class Report : System.Web.UI.Page
 
     protected void btn_find_Click(object sender, EventArgs e)
     {
-        //DataSet ds = new DataSet();
         string query;
         var Startdate = Convert.ToDateTime(txt_StartDate.Text).ToString("yyyy-MM-dd");
         var Enddate = Convert.ToDateTime(txt_Enddate.Text).ToString("yyyy-MM-dd");
@@ -233,35 +238,53 @@ public partial class Report : System.Web.UI.Page
     {
 
     }
-    //protected string GetUrl(string imagepath)
 
-    //{
 
-    //    string[] splits = Request.Url.AbsoluteUri.Split('/');
+    public int GetLastPageNoExpenseTableInPdf()
+    {
+        Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+        PdfPTable PdfTable1 = new PdfPTable(dt.Columns.Count);
+        var writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+        pdfDoc.Open();
+        PdfTable1.WidthPercentage = 100f;
+        if (dt != null)
+        {
 
-    //    if (splits.Length >= 2)
+            PdfPCell PdfPCell = null;
+            iTextSharp.text.Font font = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12f, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLUE);
+            PdfPCell = new PdfPCell(new Phrase(new Chunk("Date", font)));
+            PdfTable1.AddCell(PdfPCell);
+            PdfPCell = new PdfPCell(new Phrase(new Chunk("Money", font)));
+            PdfTable1.AddCell(PdfPCell);
+            PdfPCell = new PdfPCell(new Phrase(new Chunk("Payment", font)));
+            PdfTable1.AddCell(PdfPCell);
+            PdfPCell = new PdfPCell(new Phrase(new Chunk("Description", font)));
+            PdfTable1.AddCell(PdfPCell);
+            PdfPCell = new PdfPCell(new Phrase(new Chunk("Comments", font)));
+            PdfTable1.AddCell(PdfPCell);            
+            //How add the data from datatable to pdf table
+            iTextSharp.text.Font font1 = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8f, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
 
-    //    {
+            for (int rows = 0; rows < dt.Rows.Count; rows++)
+            {
+                for (int column = 0; column < dt.Columns.Count; column++)
+                {
+                    
+                        PdfPCell = new PdfPCell(new Paragraph(new Chunk(dt.Rows[rows][column].ToString(), font1)));
+                        PdfTable1.AddCell(PdfPCell);
+                    
+                }
+            }
+            PdfTable1.SpacingBefore = 15f; // Give some space after the text or it may overlap the tabl    
+        }
+        pdfDoc.NewPage();
+        pdfDoc.Add(PdfTable1);
+        int currentPage = writer.PageNumber;
+        return currentPage;
+    }
 
-    //        string url = splits[0] + "//";
 
-    //        for (int i = 2; i < splits.Length - 1; i++)
 
-    //        {
-
-    //            url += splits[i];
-
-    //            url += "/";
-
-    //        }
-
-    //        return url + imagepath;
-
-    //    }
-
-    //    return imagepath;
-
-    //}
     protected void btn_Pdf_Click(object sender, EventArgs e)
     {
         iTextSharp.text.Font font2 = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8f, iTextSharp.text.Font.BOLD | iTextSharp.text.Font.UNDERLINE, iTextSharp.text.BaseColor.RED);
@@ -275,7 +298,7 @@ public partial class Report : System.Web.UI.Page
         StringWriter sw = new StringWriter();
         HtmlTextWriter hw = new HtmlTextWriter(sw);
         data_grid.RenderControl(hw);
-        DataTable dt = new DataTable();
+        //DataTable dt = new DataTable();
         dt = (DataTable)Session["data_grid"];
         Boolean columnExists = dt.Columns.Contains("ID");
         Boolean columnPageno = dt.Columns.Contains("PageNo");
@@ -292,19 +315,18 @@ public partial class Report : System.Web.UI.Page
         var unique_items = new HashSet<string>(ImageStr);
         IDictionary<int, string> dict = new Dictionary<int, string>();
         Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-        //HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
         var writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
         pdfDoc.Open();
-        
-        //Create object for image
-        int count = 2;
 
-        foreach(string s in unique_items)
+        //Create object for image
+        int startOfImages= GetLastPageNoExpenseTableInPdf()+1;
+
+        foreach (string s in unique_items)
         {
             int pos = s.LastIndexOf("\\") + 1;
             filename = s.Substring(pos, s.Length - pos);
-            dict.Add(count, filename);
-            count++;
+            dict.Add(startOfImages, filename);
+            startOfImages++;
         }      
             
         for (int rows = 0; rows < dt.Rows.Count; rows++)
@@ -372,11 +394,9 @@ public partial class Report : System.Web.UI.Page
             }
             PdfTable1.SpacingBefore = 15f; // Give some space after the text or it may overlap the tabl    
         }
-        pdfDoc.NewPage();
+        pdfDoc.NewPage();      
         pdfDoc.Add(PdfTable1);
-
-
-
+     
         foreach (string s in unique_items)
         {
            
@@ -399,10 +419,9 @@ public partial class Report : System.Web.UI.Page
         }
 
         pdfDoc.Close();
-        Response.Write(pdfDoc);
+        Response.Write(pdfDoc);       
         Response.End();
-        data_grid.AllowPaging = true;
-        data_grid.DataBind();
+       
     }
 
     private List<string> GetImagesInHTMLString(string htmlString)
