@@ -89,8 +89,14 @@ public partial class Expense : System.Web.UI.Page
     //}
     string Filename;
     public string GetPhotos() {
-        string Images = " ";
+        string Images = "";
+        //string ext="";
         string ext = System.IO.Path.GetExtension(this.FileUpload1.PostedFile.FileName).ToLower();
+        if (ViewState["Filename"]!=null)
+        { string extension = ViewState["Filename"].ToString();
+            ext = "."+ extension.Substring(extension.LastIndexOf(".") + 1).ToLower();
+        }
+       
         if (ext == ".jpg" || ext == ".png" || ext == ".gif" || ext == ".jpeg")
         {
             if (FileUpload1.HasFile)
@@ -127,34 +133,26 @@ public partial class Expense : System.Web.UI.Page
     {
         try
         {
-            //DataSet ds = new DataSet("Expense");
-            string query = "insert into tbl_expenses(Date,Money,Payment,Description,Comments,Image,Filename) values('" + Convert.ToDateTime(TextBox1.Text).ToString("yyyy-MM-dd") + "','"+txt_Money.Text+"','"+ dropdownlist.SelectedItem.Text+"','"+ txt_Description.Text+"','"+ txt_Comment.Text+"','"+ GetPhotos()+"','"+Filename+"')";
-            SqlCommand sqlcom = new SqlCommand(query, connection);
-            SqlDataReader MyReader2;
-            connection.Open();
-            MyReader2 = sqlcom.ExecuteReader();
-            connection.Close();
+            DataSet ds = new DataSet("Expense");
+            //string query = "insert into tbl_expenses(Date,Money,Payment,Description,Comments,Image,Filename) values('" + Convert.ToDateTime(TextBox1.Text).ToString("yyyy-MM-dd") + "','"+txt_Money.Text+"','"+ dropdownlist.SelectedItem.Text+"','"+ txt_Description.Text+"','"+ txt_Comment.Text+"','"+ GetPhotos()+"','"+Filename+"')";
+            SqlCommand sqlcom = new SqlCommand("MasterInsertUpdateDelete", connection);
+           
+            //SqlDataReader MyReader2;
+            //connection.Open();
+            //MyReader2 = sqlcom.ExecuteReader();
+            //connection.Close();
 
-
-
-
-
-
-
-
-
-
-            //sqlcom.CommandType = CommandType.StoredProcedure;
-            //sqlcom.Parameters.AddWithValue("@Money", txt_Money.Text);
-            //sqlcom.Parameters.AddWithValue("@Payment", dropdownlist.SelectedItem.Text);
-            //sqlcom.Parameters.AddWithValue("@Comment", txt_Comment.Text);
-            //sqlcom.Parameters.AddWithValue("@Description", txt_Description.Text);
-            //sqlcom.Parameters.AddWithValue("@Image", GetPhotos());
-            //sqlcom.Parameters.AddWithValue("@date", DateTime.Parse(TextBox1.Text));
-            //sqlcom.Parameters.AddWithValue("@Filename", Filename);
-            //sqlcom.Parameters.AddWithValue("@StatementType", "Insert");
-            //SqlDataAdapter da = new SqlDataAdapter(sqlcom);
-            //da.Fill(ds);
+            sqlcom.CommandType = CommandType.StoredProcedure;
+            sqlcom.Parameters.AddWithValue("@Money", txt_Money.Text);
+            sqlcom.Parameters.AddWithValue("@Payment", dropdownlist.SelectedItem.Text);
+            sqlcom.Parameters.AddWithValue("@Comment", txt_Comment.Text);
+            sqlcom.Parameters.AddWithValue("@Description", txt_Description.Text);
+            sqlcom.Parameters.AddWithValue("@Image", GetPhotos());
+            sqlcom.Parameters.AddWithValue("@date", DateTime.Parse(TextBox1.Text));
+            sqlcom.Parameters.AddWithValue("@Filename", Filename);
+            sqlcom.Parameters.AddWithValue("@StatementType", "Insert");
+            SqlDataAdapter da = new SqlDataAdapter(sqlcom);
+            da.Fill(ds);
             //string script = "alert(\"Data Submitted Sucessfully!\");";
             //ClientScript.RegisterStartupScript(this.GetType(),
             //                      "Alert", script,"window.location.reload();", true);
