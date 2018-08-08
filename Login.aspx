@@ -84,9 +84,7 @@ img.avatar {
      <asp:TextBox ID="TextBox2" runat="server" CssClass="txtbox"></asp:TextBox>
         <asp:Button ID="Button1" runat="server" Text="Login"  CssClass="button" OnClick="Button1_Click"/>
     
-          <span><asp:HyperLink ID="HyperLink1" runat="server" CssClass="hyl" Font-Bold="True"  Font-Size="Smaller" >Forgot Password</asp:HyperLink></span>
-          <span style="float:right;"><asp:HyperLink ID="HyperLink2" runat="server" CssClass="hyl" Font-Bold="True"  Font-Size="Smaller"  NavigateUrl="~/SignUp.aspx">Sign Up</asp:HyperLink></span>
-        
+          
      
     </div>
     </form>

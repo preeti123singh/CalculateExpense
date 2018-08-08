@@ -13,7 +13,7 @@ using iTextSharp.text.html.simpleparser;
 using System.Text.RegularExpressions;
 using System.Drawing;
 
-public partial class Report : System.Web.UI.Page 
+public partial class Report : System.Web.UI.Page
 {
 
     public SqlConnection con;
@@ -106,7 +106,7 @@ public partial class Report : System.Web.UI.Page
         string path = "/Upload/";
         if (FileUpload1.HasFile)
         {
-            path += FileUpload1.FileName.Replace(" ","");
+            path += FileUpload1.FileName.Replace(" ", "");
             filename = FileUpload1.FileName.Replace(" ", "");
             //save image in folder    
             FileUpload1.SaveAs(MapPath(path));
@@ -284,71 +284,50 @@ public partial class Report : System.Web.UI.Page
             dt.Columns.Remove("ID");
             dt.Columns.Remove("Image");
         }
-        if (!columnPageno) { 
-        dt.Columns.Add("PageNo");
+        if (!columnPageno)
+        {
+            dt.Columns.Add("PageNo");
         }
-        List<string> ImageStr = GetImagesInHTMLString(sw.ToString());        
+        List<string> ImageStr = GetImagesInHTMLString(sw.ToString());
         var unique_items = new HashSet<string>(ImageStr);
-        IDictionary<int, string> dict = new Dictionary<int, string>();         
+        IDictionary<int, string> dict = new Dictionary<int, string>();
         Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
         //HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
-        var writer=PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
+        var writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
         pdfDoc.Open();
 
         //Create object for image
-        int count = 1;   
-        foreach (string s in unique_items)
+        int count = 2;
+
+        foreach(string s in unique_items)
         {
             int pos = s.LastIndexOf("\\") + 1;
             filename = s.Substring(pos, s.Length - pos);
-            pdfDoc.NewPage();
             dict.Add(count, filename);
-            iTextSharp.text.Image gif = iTextSharp.text.Image.GetInstance(s);
-            gif.Alignment = iTextSharp.text.Image.TEXTWRAP | iTextSharp.text.Image.ALIGN_RIGHT;
-            gif.ScalePercent(24f);
-            gif.IndentationLeft = 9f;
-            gif.SetAbsolutePosition((PageSize.A4.Width - gif.ScaledWidth) / 2, (PageSize.A4.Height - gif.ScaledHeight) / 2);
-            gif.SpacingAfter = 9f;
-            pdfDoc.Add(gif);
             count++;
-
-            Chunk chunk = new Chunk("Go to Last Page", font2);
-            //var des = new PdfDestination(PdfDestination.XYZ, 0, pdfDoc.PageSize.Height, 1.40f);
-            //PdfAction action = PdfAction.GotoLocalPage(2, des, a);
-            chunk.SetAction(new PdfAction(PdfAction.LASTPAGE));
-            Paragraph p5 = new Paragraph();
-            p5.Add(chunk);
-            pdfDoc.Add(p5);
-        }
-
-
+        }      
+            
         for (int rows = 0; rows < dt.Rows.Count; rows++)
         {
-                for (int count1 = 0; count1 < dict.Count; count1++)
-                {
-                    var element = dict.ElementAt(count1);
-                    var Key = element.Key;
-                    var Value = element.Value;
+            for (int count1 = 0; count1 < dict.Count; count1++)
+            {
+                var element = dict.ElementAt(count1);
+                var Key = element.Key;
+                var Value = element.Value;
 
-                    if (dt.Rows[rows]["Filename"].ToString() == Value)
-                    {
-                        dt.Rows[rows]["PageNo"] = Key;
-                    }
+                if (dt.Rows[rows]["Filename"].ToString() == Value)
+                {
+                    dt.Rows[rows]["PageNo"] = Key;
+                }
             }
         }
 
-        
         PdfPTable PdfTable1 = new PdfPTable(dt.Columns.Count);
         PdfTable1.WidthPercentage = 100f;
-        
-        //PdfTable1.LockedWidth = true;
         if (dt != null)
         {
-            
+
             PdfPCell PdfPCell = null;
-            //PdfPCell.BackgroundColor = iTextSharp.text.BaseColor.BLUE;
-            //Add Header of the pdf table
-            //iTextSharp.text.Font font = new iTextSharp.text.Font(iTextSharp.text.Font.NORMAL , 12);
             iTextSharp.text.Font font = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12f, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLUE);
             PdfPCell = new PdfPCell(new Phrase(new Chunk("Date", font)));
             PdfTable1.AddCell(PdfPCell);
@@ -368,14 +347,14 @@ public partial class Report : System.Web.UI.Page
             PdfTable1.AddCell(PdfPCell);
             //How add the data from datatable to pdf table
             iTextSharp.text.Font font1 = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8f, iTextSharp.text.Font.BOLD, iTextSharp.text.BaseColor.BLACK);
-            
+
             for (int rows = 0; rows < dt.Rows.Count; rows++)
             {
                 for (int column = 0; column < dt.Columns.Count; column++)
                 {
                     if (column == 5)
                     {
-                        Chunk chunk = new Chunk(dt.Rows[rows]["Filename"].ToString(),font2);
+                        Chunk chunk = new Chunk(dt.Rows[rows]["Filename"].ToString(), font2);
                         //Chunk chunk = new Chunk("Go to Page");
                         var des = new PdfDestination(PdfDestination.XYZ, 0, pdfDoc.PageSize.Height, 0.99f);
                         int pageno = int.Parse(dt.Rows[rows]["PageNo"].ToString());
@@ -386,32 +365,40 @@ public partial class Report : System.Web.UI.Page
                     }
                     else
                     {
-                        PdfPCell = new PdfPCell(new Paragraph(new Chunk(dt.Rows[rows][column].ToString(),font1)));
+                        PdfPCell = new PdfPCell(new Paragraph(new Chunk(dt.Rows[rows][column].ToString(), font1)));
                         PdfTable1.AddCell(PdfPCell);
                     }
                 }
             }
-            PdfTable1.SpacingBefore = 15f; // Give some space after the text or it may overlap the table
-           
+            PdfTable1.SpacingBefore = 15f; // Give some space after the text or it may overlap the tabl    
         }
-
-        //Chunk chunk = new Chunk("Go to page 3");
-        //PdfAction action = PdfAction.GotoLocalPage(3, new PdfDestination(0), a);
-        //chunk.SetAction(action);
-
-        //document.Add(chunk);
-
-        //Chunk chunk = new Chunk("Go to page 3");
-        //var des = new PdfDestination(PdfDestination.XYZ, 0, pdfDoc.PageSize.Height, 0.95f);
-        //PdfAction action = PdfAction.GotoLocalPage(2, des, writer);
-        //chunk.SetAction(action);
-        //Paragraph p5 = new Paragraph();
-        //p5.Add(chunk);
-        ////pdfDoc.Add(p5);
-        //string html2 = Regex.Replace(sw.ToString(), @"(<img\/?[^>]+>)", "", RegexOptions.IgnoreCase);
-        //StringReader sr = new StringReader(html2);
         pdfDoc.NewPage();
         pdfDoc.Add(PdfTable1);
+
+
+
+        foreach (string s in unique_items)
+        {
+            //int pos = s.LastIndexOf("\\") + 1;
+            //filename = s.Substring(pos, s.Length - pos);
+            pdfDoc.NewPage();
+            //dict.Add(count, filename);
+            iTextSharp.text.Image gif = iTextSharp.text.Image.GetInstance(s);
+            gif.Alignment = iTextSharp.text.Image.TEXTWRAP | iTextSharp.text.Image.ALIGN_RIGHT;
+            gif.ScalePercent(24f);
+            gif.IndentationLeft = 9f;
+            gif.SetAbsolutePosition((PageSize.A4.Width - gif.ScaledWidth) / 2, (PageSize.A4.Height - gif.ScaledHeight) / 2);
+            gif.SpacingAfter = 9f;
+            pdfDoc.Add(gif);
+            //count++;
+
+            Chunk chunk = new Chunk("Go to First Page", font2);
+            chunk.SetAction(new PdfAction(PdfAction.FIRSTPAGE));
+            Paragraph p5 = new Paragraph();
+            p5.Add(chunk);
+            pdfDoc.Add(p5);
+        }
+
         pdfDoc.Close();
         Response.Write(pdfDoc);
         Response.End();
@@ -428,8 +415,8 @@ public partial class Report : System.Web.UI.Page
         for (int i = 0, l = matches.Count; i < l; i++)
         {
             string modifyStr = matches[i].Groups[1].Value.Remove(0, 7);
-            images.Add(Server.MapPath("Upload") + modifyStr.Replace("/","\\").Replace("%20", " "));
-        }   
+            images.Add(Server.MapPath("Upload") + modifyStr.Replace("/", "\\").Replace("%20", " "));
+        }
         return images;
     }
 

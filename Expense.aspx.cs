@@ -15,17 +15,6 @@ public partial class Expense : System.Web.UI.Page
     System.Configuration.Configuration rootWebConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/CalculateExpense");
     System.Configuration.ConnectionStringSettings connString;
 
-
-    //protected override void OnPreRender(EventArgs e)
-    //{
-    //    base.OnPreRender(e);
-    //    string strDisAbleBackButton;
-    //    strDisAbleBackButton = "<script language=javascript>\n";
-    //    strDisAbleBackButton += "window.history.forward(1);\n";
-    //    strDisAbleBackButton += "\n</script>";
-    //    ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "clientScript", strDisAbleBackButton);
-    //}
-
     protected void Page_Load(object sender, EventArgs e)
     {
         connection = (SqlConnection)Session["connection"];
@@ -138,19 +127,34 @@ public partial class Expense : System.Web.UI.Page
     {
         try
         {
-            DataSet ds = new DataSet("Expense");
-            SqlCommand sqlcom = new SqlCommand("MasterInsertUpdateDelete", connection);
-            sqlcom.CommandType = CommandType.StoredProcedure;
-            sqlcom.Parameters.AddWithValue("@Money", txt_Money.Text);
-            sqlcom.Parameters.AddWithValue("@Payment", dropdownlist.SelectedItem.Text);
-            sqlcom.Parameters.AddWithValue("@Comment", txt_Comment.Text);
-            sqlcom.Parameters.AddWithValue("@Description", txt_Description.Text);
-            sqlcom.Parameters.AddWithValue("@Image", GetPhotos());
-            sqlcom.Parameters.AddWithValue("@date", DateTime.Parse(TextBox1.Text));
-            sqlcom.Parameters.AddWithValue("@Filename", Filename);
-            sqlcom.Parameters.AddWithValue("@StatementType", "Insert");
-            SqlDataAdapter da = new SqlDataAdapter(sqlcom);
-            da.Fill(ds);
+            //DataSet ds = new DataSet("Expense");
+            string query = "insert into tbl_expenses(Date,Money,Payment,Description,Comments,Image,Filename) values('" + Convert.ToDateTime(TextBox1.Text).ToString("yyyy-MM-dd") + "','"+txt_Money.Text+"','"+ dropdownlist.SelectedItem.Text+"','"+ txt_Description.Text+"','"+ txt_Comment.Text+"','"+ GetPhotos()+"','"+Filename+"')";
+            SqlCommand sqlcom = new SqlCommand(query, connection);
+            SqlDataReader MyReader2;
+            connection.Open();
+            MyReader2 = sqlcom.ExecuteReader();
+            connection.Close();
+
+
+
+
+
+
+
+
+
+
+            //sqlcom.CommandType = CommandType.StoredProcedure;
+            //sqlcom.Parameters.AddWithValue("@Money", txt_Money.Text);
+            //sqlcom.Parameters.AddWithValue("@Payment", dropdownlist.SelectedItem.Text);
+            //sqlcom.Parameters.AddWithValue("@Comment", txt_Comment.Text);
+            //sqlcom.Parameters.AddWithValue("@Description", txt_Description.Text);
+            //sqlcom.Parameters.AddWithValue("@Image", GetPhotos());
+            //sqlcom.Parameters.AddWithValue("@date", DateTime.Parse(TextBox1.Text));
+            //sqlcom.Parameters.AddWithValue("@Filename", Filename);
+            //sqlcom.Parameters.AddWithValue("@StatementType", "Insert");
+            //SqlDataAdapter da = new SqlDataAdapter(sqlcom);
+            //da.Fill(ds);
             //string script = "alert(\"Data Submitted Sucessfully!\");";
             //ClientScript.RegisterStartupScript(this.GetType(),
             //                      "Alert", script,"window.location.reload();", true);
