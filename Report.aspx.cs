@@ -295,7 +295,7 @@ public partial class Report : System.Web.UI.Page
         //HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
         var writer = PdfWriter.GetInstance(pdfDoc, Response.OutputStream);
         pdfDoc.Open();
-
+        
         //Create object for image
         int count = 2;
 
@@ -379,18 +379,17 @@ public partial class Report : System.Web.UI.Page
 
         foreach (string s in unique_items)
         {
-            //int pos = s.LastIndexOf("\\") + 1;
-            //filename = s.Substring(pos, s.Length - pos);
-            pdfDoc.NewPage();
-            //dict.Add(count, filename);
-            iTextSharp.text.Image gif = iTextSharp.text.Image.GetInstance(s);
+           
+            pdfDoc.NewPage(); 
+            iTextSharp.text.Image gif = iTextSharp.text.Image.GetInstance(s);    
             gif.Alignment = iTextSharp.text.Image.TEXTWRAP | iTextSharp.text.Image.ALIGN_RIGHT;
-            gif.ScalePercent(24f);
+            //gif.ScalePercent(10f);
+            gif.ScaleToFit(pdfDoc.PageSize);
             gif.IndentationLeft = 9f;
             gif.SetAbsolutePosition((PageSize.A4.Width - gif.ScaledWidth) / 2, (PageSize.A4.Height - gif.ScaledHeight) / 2);
             gif.SpacingAfter = 9f;
             pdfDoc.Add(gif);
-            //count++;
+          
 
             Chunk chunk = new Chunk("Go to First Page", font2);
             chunk.SetAction(new PdfAction(PdfAction.FIRSTPAGE));
