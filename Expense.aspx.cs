@@ -8,12 +8,13 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.IO;
+using System.Data.SQLite;
 
 public partial class Expense : System.Web.UI.Page
 {
     public SqlConnection connection;
-    System.Configuration.Configuration rootWebConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/CalculateExpense");
-    System.Configuration.ConnectionStringSettings connString;
+  
+   
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -46,47 +47,16 @@ public partial class Expense : System.Web.UI.Page
             SqlCommand sqlcmd1 = new SqlCommand(query1, connection);
             SqlDataAdapter da1 = new SqlDataAdapter(sqlcmd1);
             da1.Fill(ds);
-            //DataTable dt = ds.Tables[0];
+          
             dropdownlist.DataSource= ds.Tables[0];
             dropdownlist.DataTextField = "Payment";
-            //dropdownlist.DataValueField = "ID";
+          
             dropdownlist.DataBind();
             connection.Close();
     }
 
     
-    //public void GetConnectionString()
-    //{
-    //    try
-    //    {
-
-    //        if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
-    //        {
-    //            connString = rootWebConfig.ConnectionStrings.ConnectionStrings["Expenses"];
-    //            if (connection == null)
-    //            {
-    //                connection = new SqlConnection(connString.ToString());
-                    
-    //                Session["Connection"] = connection;
-    //                connection.Open();
-
-    //            }
-    //        }
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Page.ClientScript.RegisterStartupScript(Page.GetType(),
-    //            "MessageBox", "alert('" + e.Message + "');", true);
-    //    }
-
-    //    finally
-    //    {
-    //        if (connection != null && connection.State == ConnectionState.Open)
-    //        {
-    //            connection.Close();
-    //        }
-    //    }
-    //}
+   
     string Filename;
     public string GetPhotos() {
         string Images = "";
@@ -134,14 +104,9 @@ public partial class Expense : System.Web.UI.Page
         try
         {
             DataSet ds = new DataSet("Expense");
-            //string query = "insert into tbl_expenses(Date,Money,Payment,Description,Comments,Image,Filename) values('" + Convert.ToDateTime(TextBox1.Text).ToString("yyyy-MM-dd") + "','"+txt_Money.Text+"','"+ dropdownlist.SelectedItem.Text+"','"+ txt_Description.Text+"','"+ txt_Comment.Text+"','"+ GetPhotos()+"','"+Filename+"')";
+          
             SqlCommand sqlcom = new SqlCommand("MasterInsertUpdateDelete", connection);
-           
-            //SqlDataReader MyReader2;
-            //connection.Open();
-            //MyReader2 = sqlcom.ExecuteReader();
-            //connection.Close();
-
+         
             sqlcom.CommandType = CommandType.StoredProcedure;
             sqlcom.Parameters.AddWithValue("@Money", txt_Money.Text);
             sqlcom.Parameters.AddWithValue("@Payment", dropdownlist.SelectedItem.Text);
@@ -153,9 +118,7 @@ public partial class Expense : System.Web.UI.Page
             sqlcom.Parameters.AddWithValue("@StatementType", "Insert");
             SqlDataAdapter da = new SqlDataAdapter(sqlcom);
             da.Fill(ds);
-            //string script = "alert(\"Data Submitted Sucessfully!\");";
-            //ClientScript.RegisterStartupScript(this.GetType(),
-            //                      "Alert", script,"window.location.reload();", true);
+                               
             ClientScript.RegisterStartupScript( this.GetType(),"Alert", "alert('Data Submitted Sucessfully!')", true);
             Response.Redirect("Display.aspx");
         }
@@ -169,8 +132,7 @@ public partial class Expense : System.Web.UI.Page
 
     protected void btn_reports_Click(object sender, EventArgs e)
     {
-        //string parameter = txt_Money.Text + "|" + dropdownlist.SelectedItem.Text + "|" + txt_Comment.Text + "|" + txt_Description.Text + "|" + GetPhotos() + "|" + DateTime.Parse(TextBox1.Text) + "|" + "insert";
-
+       
         Response.Redirect("~\\Report.aspx");
     }
 

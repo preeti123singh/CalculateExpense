@@ -423,7 +423,7 @@ public partial class Report : System.Web.UI.Page
         Response.End();
        
     }
-
+ 
     private List<string> GetImagesInHTMLString(string htmlString)
     {
         List<string> images = new List<string>();
